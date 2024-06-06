@@ -6,8 +6,8 @@
 #include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "Realme";
-const char* password = "wlp2s0mon";
+const char* ssid = "test";
+const char* password = "test12345";
 
 // Replace with your endpoint URL
 const char* serverUrl = "http://192.168.43.175:5000/upload";
