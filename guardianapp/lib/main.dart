@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:guardianapp/helpers/notification.dart';
 import 'package:guardianapp/helpers/routes.dart';
 import 'package:guardianapp/pages/my_alerts.dart';
 import 'package:guardianapp/pages/guardians.dart';
 import 'package:guardianapp/pages/home.dart';
 import 'package:guardianapp/pages/login.dart';
+import 'package:guardianapp/pages/recording.dart';
 import 'package:guardianapp/pages/register.dart';
 import 'package:guardianapp/pages/resource.dart';
 import 'package:guardianapp/pages/users_under_my_guardianship.dart';
@@ -20,6 +22,7 @@ Future<bool> _checkTokenExists() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LocalNotificationService().init();
   runApp(MyApp(
     isAuthenticated: await _checkTokenExists(),
   ));
@@ -50,6 +53,7 @@ class MyApp extends StatelessWidget {
         alertsRoute: (context) => const AlertScreen(),
         myPeopleAlertsRoute: (context) => const MyPeopleAlertScreen(),
         resourceRoute: (context) => const ResourceScreen(),
+        recordingRoute: (context) => const RecordingScreen(),
       },
     );
   }

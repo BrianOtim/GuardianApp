@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guardianapp/helpers/urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../helpers/storage.dart';
 
 class MyPeopleAlertScreen extends StatefulWidget {
@@ -44,13 +46,32 @@ class _MyPeopleAlertScreenState extends State<MyPeopleAlertScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, int index) {
                 var alert = alertList[index];
+                var message = alert['message'];
+                var lat = alert['latitude'];
+                var long = alert['longitude'];
                 return Container(
-                    height: 100.0,
+                    height: 110.0,
                     margin: const EdgeInsets.only(bottom: 5.0),
                     child: ListTile(
                       tileColor: const Color.fromARGB(255, 250, 249, 249),
+                      leading: IconButton(
+                        onPressed: () async {
+                          final uri = Uri.parse(
+                              "https://www.google.com/maps/search/?api=1&query=$lat,$long");
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri);
+                          } else {
+                            throw 'Could not launch $uri';
+                          }
+                        },
+                        icon: const Icon(
+                          CupertinoIcons.location_solid,
+                          color: Colors.blue,
+                          size: 35.0,
+                        ),
+                      ),
                       title: Text(
-                        alert['message'],
+                        message,
                       ),
                     ));
               }),

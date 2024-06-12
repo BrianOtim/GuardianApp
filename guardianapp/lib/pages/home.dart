@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guardianapp/helpers/colors.dart';
 import 'package:guardianapp/helpers/routes.dart';
-import '../helpers/storage.dart';
+import 'package:guardianapp/helpers/location.dart';
+import 'package:guardianapp/helpers/sending.dart';
+import 'package:guardianapp/helpers/storage.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,12 +19,12 @@ class HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: themeColor,
       appBar: AppBar(
-        leading: Icon(
+        leading: const Icon(
           CupertinoIcons.home,
           color: themeColor,
         ),
-        title:
-            Text('Home', style: TextStyle(fontSize: 16.0, color: themeColor)),
+        title: const Text('Home',
+            style: TextStyle(fontSize: 16.0, color: themeColor)),
         centerTitle: true,
         actions: [
           InkWell(
@@ -34,8 +36,8 @@ class HomeScreenState extends State<HomeScreen> {
                 }
               });
             },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text("Sign out",
                   style: TextStyle(fontSize: 16.0, color: themeColor)),
             ),
@@ -64,6 +66,28 @@ class HomeScreenState extends State<HomeScreen> {
                     );
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const Text('Loading...');
+                  }
+                }
+              },
+            ),
+          ),
+          Center(
+            child: FutureBuilder<List<Object>>(
+              future: obtainLocation(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  if (snapshot.hasData) {
+                    sendData(snapshot.data!);
+                    return const Text(
+                      '___',
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('_ _');
                   } else {
                     return const Text('Loading...');
                   }
@@ -143,7 +167,7 @@ class MenuButton extends StatelessWidget {
             child: Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 13.0, color: themeColor, fontWeight: FontWeight.bold),
         )),
       ),

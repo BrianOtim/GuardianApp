@@ -7,3 +7,4 @@ const guardianshipRoute = "/guardianship";
 const alertsRoute = "/alerts";
 const myPeopleAlertsRoute = "/my-people-alerts";
 const resourceRoute = "/resource";
+const recordingRoute = "/recording";
