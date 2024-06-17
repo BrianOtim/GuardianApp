@@ -1,0 +1,59 @@
+Wifi Module
+-Side with V5
+V5 R +11
+GND Bn -11
+G35 Bn h14
+
+-Side with CLK
+G2 Bk g4
+G5 B g24
+G18 G g25
+G19 Y g27
+G23 P g26
+
+SD Card Module
+CS G i24
+SCK B i25
+MOSI P i26
+MISO W i27
+VCC W i28
+GND Bk i29
+
+Microphone Module
+GND O j15
+Vdd R j16
+Out Y j14
+
+Push Button
+e2 f2
+e4 f4
+
+Resistor(why)
+d4 b5
+
+Other connections +-side from j side -+ represents voltage part
+first number is the number of block among the five blocks, second number is the number in the block
+block counting is done going downwards from the the part where letters are at the top
+
+-55 Bk g29
+
++23 Y a2
+-23 G a5
+
++22 O g28
+
+-15 Gy h15
++15 W h16
+
+Color Map For Wires
+B blue
+Bk black
+Bn brown
+G green
+Gy gray
+O orange
+P purple
+R red
+W white
+Y yellow
+
