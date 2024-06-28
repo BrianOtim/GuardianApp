@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<String> pickValue(String name, {required String name1}) async {
+Future<String> pickValue({required String name}) async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(name) ?? "";
+  return prefs.getString(name) ?? '';
 }
 
 Future<int> pickIntegerValue({required String name}) async {

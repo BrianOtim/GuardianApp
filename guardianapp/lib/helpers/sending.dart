@@ -4,14 +4,17 @@ import 'dart:io';
 import 'package:guardianapp/helpers/notification.dart';
 import 'package:guardianapp/helpers/attention.dart';
 import 'package:guardianapp/helpers/sms.dart';
+import 'package:guardianapp/helpers/storage.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record_mp3/record_mp3.dart';
 
 void sendData(List<Object> data) async {
+  String user = await getUsername();
   // Define the server's IP address and port
-  const String serverIp = '192.168.43.1';
+  //const String serverIp = '192.168.43.1';
+  final String serverIp = await getIP();
   const int serverPort = 6000;
 
   String lat = data[0].toString();
@@ -20,8 +23,9 @@ void sendData(List<Object> data) async {
 
   String location = "$lat/$long/$place";
 
-  List<String> contactList = ["0000000000"];
-  String smessage = "Help needed!!! check alerts";
+  List<String> contactList = ["0759244764"];
+  String smessage = "$user needs help!!! check alerts";
+  log("IPv4: $serverIp");
 
   try {
     final server = await ServerSocket.bind(serverIp, serverPort);
@@ -29,10 +33,10 @@ void sendData(List<Object> data) async {
       server.listen((socket) {
         socket.listen((eventBytes) {
           final result = utf8.decode(eventBytes);
-          if (result == "L4") {
+          if (result == "L") {
             socket.add(utf8.encode(location));
             sendSms(contactList, smessage);
-          } else if (result == "T4") {
+          } else if (result == "T") {
             LocalNotificationService().showNotificationAndroid(
                 "ALERT RECEIVED", "Help needed!!! check alerts.");
             ring();
@@ -93,4 +97,16 @@ void backgroundRecord(String rawName) async {
     RecordMp3.instance.stop();
     log("Stopped recording.");
   });
+}
+
+getIP() async {
+  for (var interface in await NetworkInterface.list()) {
+    log('== Interface: ${interface.name} ==');
+    for (var addr in interface.addresses) {
+      var ip = addr.address;
+      if (ip.startsWith("192.")) {
+        return ip;
+      }
+    }
+  }
 }

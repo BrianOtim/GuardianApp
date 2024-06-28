@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guardianapp/helpers/colors.dart';
 import 'package:guardianapp/helpers/routes.dart';
 import 'package:guardianapp/helpers/urls.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +52,7 @@ class _AlertScreenState extends State<AlertScreen> {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
               itemCount: alertList.length,
               shrinkWrap: true,
               physics: const AlwaysScrollableScrollPhysics(),
@@ -59,12 +60,15 @@ class _AlertScreenState extends State<AlertScreen> {
                 var alert = alertList[index];
                 var message = alert['message'];
                 var lat = alert['latitude'];
-                var long = alert['longitude'];
+                var long = alert['logitude'];
                 return Container(
                     height: 130.0,
                     margin: const EdgeInsets.only(bottom: 5.0),
+                    decoration: BoxDecoration(
+                      color: tileColor,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     child: ListTile(
-                      tileColor: const Color.fromARGB(255, 250, 249, 249),
                       leading: IconButton(
                         onPressed: () async {
                           final uri = Uri.parse(

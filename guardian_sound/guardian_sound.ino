@@ -6,18 +6,18 @@
 #include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "test";
-const char* password = "test12345";
+const char* ssid = "Realme";
+const char* password = "wlp2s0mon";
 
 // Replace with your endpoint URL
-const char* serverUrl = "http://192.168.43.175:5000/upload";
+const char* serverUrl = "http://192.168.43.216:5000/upload";
 
 const int buttonPin = 2;
 const int soundPin = 35; // Analog pin connected to sound sensor
 const int threshold = 500; // Adjust as per your requirement
 const int chipSelect = 5; // Pin connected to SD card module
 
-int buttonState = 0; 
+int buttonState = 0;
 
 File audioFile;
 
@@ -44,7 +44,7 @@ uint32_t subChunk2Size = 0;
 void setup() {
   Serial.begin(9600);
   delay(1000);
-  
+
   // Initialize SD card
   if (!SD.begin(chipSelect)) {
     Serial.println("Card failed, or not present");
@@ -74,17 +74,15 @@ void loop() {
   buttonState = digitalRead(buttonPin);
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
-    
     Serial.println("ON PRESSED");
     int soundLevel = analogRead(soundPin);
     Serial.print("Sound level: ");
     Serial.println(soundLevel);
 
-    if (soundLevel > threshold) 
+    if (soundLevel > threshold)
     {
-          recordAudio();
+      recordAudio();
     }
-    
   }
   delay(100);
 }
@@ -150,6 +148,7 @@ void finalizeWavFile(File wavFile) {
   wavFile.write((const uint8_t*)&chunkSize, 4);
 
   wavFile.seek(40);
+  wavFile.write((const uint8_t*)&subChunk2Size, 4);
 }
 
 void uploadFile(String fileName) {
@@ -161,7 +160,7 @@ void uploadFile(String fileName) {
     }
 
     WiFiClient client;
-    if (!client.connect("192.168.137.1", 5000)) {
+    if (!client.connect("192.168.43.216", 5000)) {
       Serial.println("Connection to server failed");
       return;
     }
@@ -172,7 +171,6 @@ void uploadFile(String fileName) {
       fileNameNoSlash = fileNameNoSlash.substring(1);
     }
 
-    
     String boundary = "--------------------------" + String(millis(), HEX);
     String header = "--" + boundary + "\r\n";
     header += "Content-Disposition: form-data; name=\"victim_id\"\r\n\r\n4\r\n";
@@ -185,7 +183,7 @@ void uploadFile(String fileName) {
 
     // Construct the HTTP POST request
     client.println("POST /upload HTTP/1.1");
-    client.println("Host: 192.168.137.1");
+    client.println("Host: 192.168.43.216");
     client.println("Content-Type: multipart/form-data; boundary=" + boundary);
     client.println("Content-Length: " + String(contentLength));
     client.println();
@@ -219,7 +217,7 @@ void uploadFile(String fileName) {
     String response = client.readString();
     Serial.println("Server response:");
     Serial.println(response);
-
+    
     file.close();
     client.stop();
   } else {

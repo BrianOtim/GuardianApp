@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:guardianapp/helpers/colors.dart';
 import 'package:guardianapp/helpers/sending.dart';
 import 'package:guardianapp/helpers/storage.dart';
@@ -43,7 +44,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
             style: TextStyle(fontSize: 16.0, color: themeColor)),
         centerTitle: true,
       ),
-      floatingActionButton: _recordingButton(),
+      //floatingActionButton: _recordingButton(),
       body: _buildUI(),
     );
   }
@@ -55,7 +56,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ListView.builder(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
             itemCount: alertList.length,
             shrinkWrap: true,
             physics: const AlwaysScrollableScrollPhysics(),
@@ -71,8 +72,11 @@ class _RecordingScreenState extends State<RecordingScreen> {
               return Container(
                 height: 100,
                 margin: const EdgeInsets.only(bottom: 5.0),
+                decoration: BoxDecoration(
+                  color: tileColor,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
                 child: ListTile(
-                  tileColor: const Color.fromARGB(255, 250, 249, 249),
                   title: Row(
                     children: [
                       if (!isPlaying)
